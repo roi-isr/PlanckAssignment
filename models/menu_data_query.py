@@ -15,30 +15,40 @@ class MenuDataQuery:
             raise ValueError("Not categoriesList field in the income request's JSON")
 
     def get_all_items_by_category(self, category: str, fields_to_filter=()):
+        requested_dish_collection = self.__get_dish_collection_by_category(category=category)
+
+        return self.__extract_fields_from_collection(collection=requested_dish_collection, fields_to_filter=fields_to_filter)
+
+    def get_item_by_category_and_id(self, category: str, _id: int, fields_to_filter=()):
+        requested_dish_collection = self.__get_dish_collection_by_category(category=category)
+
+        dish_item = self.__filter_dish_collection_by_id(requested_dish_collection, _id=_id)
+
+        if not dish_item:
+            return None
+        return self.__extract_fields_from_collection(collection=dish_item, fields_to_filter=fields_to_filter)
+
+    def __get_dish_collection_by_category(self, category):
         requested_category_list = list(
             filter(lambda cat: cat["categoryName"] == category, self.category_list)
         )
 
-        requested_dish_list = []
+        # in order to deal with category duplications
+        requested_dish_collection = []
         for category_item in requested_category_list:
-            requested_dish_list += category_item["dishList"]
-
-        return self.__extract_field_from_collection(collection=requested_dish_list, fields_to_filter=fields_to_filter)
-
-    def get_item_by_category_and_id(self, category: str, fields_to_filter=()):
-        requested_category_list = list(
-            filter(lambda cat: cat["categoryName"] == category, self.category_list)
-        )
-
-        requested_dish_list = []
-        for category_item in requested_category_list:
-            requested_dish_list += category_item["dishList"]
-
-        return self.__extract_field_from_collection(collection=requested_dish_list, fields_to_filter=fields_to_filter)
+            requested_dish_collection += category_item["dishList"]
+        return requested_dish_collection
 
     @staticmethod
-    def __extract_field_from_collection(collection, fields_to_filter):
+    def __filter_dish_collection_by_id(requested_dish_collection, _id: int):
+        dish_item = list(
+            filter(lambda cat: cat["dishId"] == _id, requested_dish_collection)
+        )
+
+        return dish_item
+
+    @staticmethod
+    def __extract_fields_from_collection(collection, fields_to_filter):
         if fields_to_filter:
             return [{k: doc[k] for k in fields_to_filter} for doc in collection]
         return collection  # in case there are no fields to filter, returns the whole collection as it is
-
