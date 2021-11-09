@@ -15,11 +15,10 @@ class MenuDataQuery:
             raise ValueError("Not categoriesList field in the income request's JSON")
 
     def get_all_items_by_category(self, category: str):
-
         requested_category_list = list(
             filter(lambda cat: cat["categoryName"] == category, self.category_list)
         )
 
-        requested_dish_list = [category_item["distList"] for category_item in requested_category_list]
+        requested_dish_list = [category_item["dishList"] for category_item in requested_category_list]
 
         print(requested_dish_list)

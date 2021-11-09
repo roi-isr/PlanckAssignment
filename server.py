@@ -1,3 +1,12 @@
+from flask import Flask, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)  # enable connections from all domains
+
+
+
+
 from utility.http_request import send_http_request
 from models.menu_data_query import MenuDataQuery
 
