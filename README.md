@@ -1,1 +1,5 @@
-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
+Suggest a simple way to demonstrate the service functionality (CLI, unit tests, other) - 
+
+- Plan API test in Postman
+- Write unittest and functional test
+- Write errors to a log file

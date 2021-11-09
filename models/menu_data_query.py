@@ -17,7 +17,8 @@ class MenuDataQuery:
     def get_all_items_by_category(self, category: str, fields_to_filter=()):
         requested_dish_collection = self.__get_dish_collection_by_category(category=category)
 
-        return self.__extract_fields_from_collection(collection=requested_dish_collection, fields_to_filter=fields_to_filter)
+        return self.__extract_fields_from_collection(collection=requested_dish_collection,
+                                                     fields_to_filter=fields_to_filter)
 
     def get_item_by_category_and_id(self, category: str, _id: int, fields_to_filter=()):
         requested_dish_collection = self.__get_dish_collection_by_category(category=category)
